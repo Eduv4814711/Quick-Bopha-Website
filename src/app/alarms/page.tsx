@@ -6,52 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Badge } from "@/components/ui/badge";
 import { StatutoryTrustBanner } from "@/components/shared/StatutoryTrustBanner";
 import { COMPANY_DETAILS, CONTROL_ROOM_ESCALATION_MATRIX } from "@/lib/constants";
+import { readAdminStore } from "@/lib/admin-store";
 
 export default function AlarmsPage() {
-  const packages = [
-    {
-      name: "Residential & Family Estate",
-      badge: "Homeowners",
-      price: "From R495 / month",
-      description: "Complete perimeter and interior alarm monitoring with dedicated armed tactical dispatch in Wolmaransstad.",
-      features: [
-        "24/7 Control Room active alarm monitoring",
-        "Sub-5 minute armed response guarantee in municipal zone",
-        "Mobile App panic button & remote arm/disarm",
-        "Load-shedding backup battery telemetry",
-        "Free monthly test signal verification",
-      ],
-      popular: false,
-    },
-    {
-      name: "Agricultural Farmstead Security",
-      badge: "Most Popular",
-      price: "From R850 / month",
-      description: "Engineered specifically for farms, smallholdings, and remote homesteads along the N12 corridor.",
-      features: [
-        "Solar-powered outdoor perimeter motion beams",
-        "Long-range radio repeater telemetry (No GSM dead zones)",
-        "Dedicated Farm Watch & rural response vehicle dispatch",
-        "Livestock enclosure gate sensor integration",
-        "SAPS Eyes & Ears (E2) coordinated incident response",
-      ],
-      popular: true,
-    },
-    {
-      name: "Commercial & Retail Smart Safe",
-      badge: "Business & Retail",
-      price: "From R1,450 / month",
-      description: "High-security cash handling, drop-box telematics, and multi-zone intrusion detection for businesses.",
-      features: [
-        "Smart Safe digital cash drop monitoring with tamper alert",
-        "Cash-In-Transit (CIT) cash collection coordination",
-        "AI CCTV cloud camera health check & perimeter tripwire",
-        "Opening & closing schedule violation alerts",
-        "Priority VIP tactical armed response",
-      ],
-      popular: false,
-    },
-  ];
+  const { alarmPackagesPricing: packages } = readAdminStore();
 
   const continuityProtocols = [
     {
@@ -358,7 +316,7 @@ export default function AlarmsPage() {
                   <CardTitle className="text-xl font-bold text-[#0B1340]">{pkg.name}</CardTitle>
                   <CardDescription className="text-xs text-slate-600 mt-1">{pkg.description}</CardDescription>
                   <div className="pt-4 text-2xl font-black text-red-600 font-mono">
-                    {pkg.price}
+                    From R {pkg.monthlyPriceZar.toLocaleString("en-ZA")} {pkg.billingUnit}
                   </div>
                 </CardHeader>
 

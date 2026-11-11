@@ -5,9 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatutoryTrustBanner } from "@/components/shared/StatutoryTrustBanner";
 import { AcademyEnrolmentStepper } from "@/components/features/AcademyEnrolmentStepper";
-import { ACADEMY_COURSES, ACCREDITED_TRAINING_ECOSYSTEM } from "@/lib/constants";
+import { ACCREDITED_TRAINING_ECOSYSTEM } from "@/lib/constants";
+import { readAdminStore } from "@/lib/admin-store";
 
 export default function AcademyPage() {
+  const { academyCoursesPricing } = readAdminStore();
   const trainingCycleSteps = [
     { step: "Step 01", title: "Needs Analysis", desc: "Identifying operational & site-specific competency requirements." },
     { step: "Step 02", title: "Curriculum Design", desc: "Structuring outcomes aligned with PSiRA, SASSETA & QCTO unit standards." },
@@ -74,7 +76,7 @@ export default function AcademyPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ACADEMY_COURSES.map((course) => (
+            {academyCoursesPricing.map((course) => (
               <Card
                 key={course.id}
                 className="bg-white border-slate-200 hover:border-red-300 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"

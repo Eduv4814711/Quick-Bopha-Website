@@ -1,57 +1,22 @@
 import React from "react";
-import { CheckCircle2, Warehouse, Tractor, HardHat, Car } from "lucide-react";
+import Link from "next/link";
+import { CheckCircle2, Warehouse, Tractor, HardHat, Car, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { PublicGuardPricingCards } from "@/components/features/PublicGuardPricingCards";
 import { StatutoryTrustBanner } from "@/components/shared/StatutoryTrustBanner";
+import { readAdminStore } from "@/lib/admin-store";
+
+const ICON_MAP = {
+  Warehouse,
+  Tractor,
+  HardHat,
+  Car,
+};
 
 export default function ServicesPage() {
-  const serviceCategories = [
-    {
-      title: "Static Commercial & Industrial Guarding",
-      icon: Warehouse,
-      description: "24/7 post defence and perimeter security for commercial depots, retail centers, warehouses, and municipal complexes.",
-      points: [
-        "PSiRA Grade A, B, and C armed or unarmed officers",
-        "Biometric turnstile and vehicle scale access control",
-        "Digital Occurrence Book (OB) real-time incident transmission",
-        "Continuous supervision via roving tactical fleet commanders",
-      ],
-    },
-    {
-      title: "Agricultural & Rural Farm Security",
-      icon: Tractor,
-      description: "Specialized rural anti-intrusion patrols safeguarding grain silos, livestock herds, and farmsteads along the N12 corridor.",
-      points: [
-        "Thermal night vision and perimeter spotlight units",
-        "Livestock theft mitigation & boundary fence patrols",
-        "Direct radio link to local farm watch & SAPS Sector policing",
-        "Solar-backed wireless intrusion sensor monitoring",
-      ],
-    },
-    {
-      title: "Mining Concession & Critical Infrastructure",
-      icon: HardHat,
-      description: "High-security access protocols and asset protection engineered for North West mining operations and municipal utility substations.",
-      points: [
-        "Gold, diamond, and heavy equipment asset protection",
-        "Randomized drug/alcohol breathalyzer gate screening",
-        "Strike, protest, and labor dispute crowd de-escalation",
-        "Copper cable theft and transformer substation defense",
-      ],
-    },
-    {
-      title: "VIP Close Protection & Convoy Escort",
-      icon: Car,
-      description: "Armed executive escort and VIP transit security across the Dr Kenneth Kaunda District and inter-provincial corridors.",
-      points: [
-        "Tactical Close Protection Officers (CPOs) with Grade A certification",
-        "Armored ballistic vehicle convoys & secure transport",
-        "Advance route reconnaissance & counter-ambush planning",
-        "Discreet, protocol-trained executive personal protection",
-      ],
-    },
-  ];
+  const { serviceCategoriesPricing } = readAdminStore();
 
   return (
     <div className="flex flex-col min-h-screen bg-white text-[#0B1340]">
@@ -75,12 +40,12 @@ export default function ServicesPage() {
 
       <StatutoryTrustBanner />
 
-      {/* Service Catalog Grid */}
+      {/* Service Catalog Grid with Editable Service Pricing */}
       <section className="py-16 sm:py-20 bg-white px-4 sm:px-8">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1340] tracking-tight">
-              Operational Guarding Solutions
+              Operational Guarding Solutions &amp; Rates
             </h2>
             <p className="text-xs sm:text-sm text-slate-600">
               Each post is fully supported by live cloud Occurrence Book telemetry and 24/7 supervisor spot-checks.
@@ -88,13 +53,26 @@ export default function ServicesPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {serviceCategories.map((svc) => {
-              const Icon = svc.icon;
+            {serviceCategoriesPricing.map((svc) => {
+              const Icon = ICON_MAP[svc.iconName] || Warehouse;
               return (
-                <Card key={svc.title} className="bg-white border-slate-200 hover:border-red-300 shadow-xs hover:shadow-lg transition-all">
+                <Card key={svc.id} className="bg-white border-slate-200 hover:border-red-300 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between">
                   <CardContent className="p-6 space-y-4">
-                    <div className="w-12 h-12 rounded-xl bg-[#0B1340] text-white flex items-center justify-center ring-4 ring-red-50">
-                      <Icon className="w-6 h-6 text-red-400" />
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-[#0B1340] text-white flex items-center justify-center ring-4 ring-red-50 shrink-0">
+                        <Icon className="w-6 h-6 text-red-400" />
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                          Starting Rate
+                        </div>
+                        <div className="text-xl font-black text-red-600 font-mono">
+                          From R {svc.startingPriceZar.toLocaleString("en-ZA")}
+                        </div>
+                        <div className="text-[11px] font-semibold text-slate-500">
+                          {svc.billingUnit}
+                        </div>
+                      </div>
                     </div>
 
                     <div className="space-y-1">
@@ -112,6 +90,15 @@ export default function ServicesPage() {
                         </li>
                       ))}
                     </ul>
+
+                    <div className="pt-2">
+                      <Link href={`/contact?subject=${encodeURIComponent(`Service Quote: ${svc.title}`)}`}>
+                        <Button variant="outline" className="w-full border-slate-300 text-[#0B1340] hover:bg-[#0B1340] hover:text-white font-bold text-xs h-9 gap-1.5 transition-colors">
+                          <span>Book {svc.title}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Button>
+                      </Link>
+                    </div>
                   </CardContent>
                 </Card>
               );

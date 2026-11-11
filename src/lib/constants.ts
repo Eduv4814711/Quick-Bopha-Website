@@ -290,7 +290,18 @@ export const TRI_DIVISIONS = [
   },
 ];
 
-export const ACADEMY_COURSES = [
+export interface AcademyCourseItem {
+  id: string;
+  name: string;
+  level: string;
+  duration: string;
+  priceZar: number;
+  depositZar: number;
+  prerequisites: string;
+  description: string;
+}
+
+export const ACADEMY_COURSES: AcademyCourseItem[] = [
   {
     id: "grade-e",
     name: "PSiRA Grade E (Entry Guarding)",
@@ -471,4 +482,143 @@ export const DEFAULT_PUBLIC_GUARD_RATES: PublicGuardRateTier[] = [
     ],
   },
 ];
+
+export interface ServiceCategoryItem {
+  id: string;
+  title: string;
+  iconName: "Warehouse" | "Tractor" | "HardHat" | "Car";
+  startingPriceZar: number;
+  billingUnit: string;
+  description: string;
+  points: string[];
+}
+
+export const DEFAULT_SERVICE_CATEGORIES: ServiceCategoryItem[] = [
+  {
+    id: "static-commercial",
+    title: "Static Commercial & Industrial Guarding",
+    iconName: "Warehouse",
+    startingPriceZar: 9450,
+    billingUnit: "per guard / month (excl. VAT)",
+    description:
+      "24/7 post defence and perimeter security for commercial depots, retail centers, warehouses, and municipal complexes.",
+    points: [
+      "PSiRA Grade A, B, and C armed or unarmed officers",
+      "Biometric turnstile and vehicle scale access control",
+      "Digital Occurrence Book (OB) real-time incident transmission",
+      "Continuous supervision via roving tactical fleet commanders",
+    ],
+  },
+  {
+    id: "agri-rural",
+    title: "Agricultural & Rural Farm Security",
+    iconName: "Tractor",
+    startingPriceZar: 10372,
+    billingUnit: "per guard / month (excl. VAT)",
+    description:
+      "Specialized rural anti-intrusion patrols safeguarding grain silos, livestock herds, and farmsteads along the N12 corridor.",
+    points: [
+      "Thermal night vision and perimeter spotlight units",
+      "Livestock theft mitigation & boundary fence patrols",
+      "Direct radio link to local farm watch & SAPS Sector policing",
+      "Solar-backed wireless intrusion sensor monitoring",
+    ],
+  },
+  {
+    id: "mining-infrastructure",
+    title: "Mining Concession & Critical Infrastructure",
+    iconName: "HardHat",
+    startingPriceZar: 11350,
+    billingUnit: "per guard / month (excl. VAT)",
+    description:
+      "High-security access protocols and asset protection engineered for North West mining operations and municipal utility substations.",
+    points: [
+      "Gold, diamond, and heavy equipment asset protection",
+      "Randomized drug/alcohol breathalyzer gate screening",
+      "Strike, protest, and labor dispute crowd de-escalation",
+      "Copper cable theft and transformer substation defense",
+    ],
+  },
+  {
+    id: "vip-convoy",
+    title: "VIP Close Protection & Convoy Escort",
+    iconName: "Car",
+    startingPriceZar: 3500,
+    billingUnit: "per CPO officer / day (or R 12,450 / mo)",
+    description:
+      "Armed executive escort and VIP transit security across the Dr Kenneth Kaunda District and inter-provincial corridors.",
+    points: [
+      "Tactical Close Protection Officers (CPOs) with Grade A certification",
+      "Armored ballistic vehicle convoys & secure transport",
+      "Advance route reconnaissance & counter-ambush planning",
+      "Discreet, protocol-trained executive personal protection",
+    ],
+  },
+];
+
+export interface AlarmPackageItem {
+  id: string;
+  name: string;
+  badge: string;
+  monthlyPriceZar: number;
+  billingUnit: string;
+  description: string;
+  features: string[];
+  popular: boolean;
+}
+
+export const DEFAULT_ALARM_PACKAGES: AlarmPackageItem[] = [
+  {
+    id: "alarm-residential",
+    name: "Residential & Family Estate",
+    badge: "Homeowners",
+    monthlyPriceZar: 495,
+    billingUnit: "/ month",
+    description:
+      "Complete perimeter and interior alarm monitoring with dedicated armed tactical dispatch in Wolmaransstad.",
+    features: [
+      "24/7 Control Room active alarm monitoring",
+      "Sub-5 minute armed response guarantee in municipal zone",
+      "Mobile App panic button & remote arm/disarm",
+      "Load-shedding backup battery telemetry",
+      "Free monthly test signal verification",
+    ],
+    popular: false,
+  },
+  {
+    id: "alarm-agricultural",
+    name: "Agricultural Farmstead Security",
+    badge: "Most Popular",
+    monthlyPriceZar: 850,
+    billingUnit: "/ month",
+    description:
+      "Engineered specifically for farms, smallholdings, and remote homesteads along the N12 corridor.",
+    features: [
+      "Solar-powered outdoor perimeter motion beams",
+      "Long-range radio repeater telemetry (No GSM dead zones)",
+      "Dedicated Farm Watch & rural response vehicle dispatch",
+      "Livestock enclosure gate sensor integration",
+      "SAPS Eyes & Ears (E2) coordinated incident response",
+    ],
+    popular: true,
+  },
+  {
+    id: "alarm-commercial",
+    name: "Commercial & Retail Smart Safe",
+    badge: "Business & Retail",
+    monthlyPriceZar: 1450,
+    billingUnit: "/ month",
+    description:
+      "High-security cash handling, drop-box telematics, and multi-zone intrusion detection for businesses.",
+    features: [
+      "Smart Safe digital cash drop monitoring with tamper alert",
+      "Cash-In-Transit (CIT) cash collection coordination",
+      "AI CCTV cloud camera health check & perimeter tripwire",
+      "Opening & closing schedule violation alerts",
+      "Priority VIP tactical armed response",
+    ],
+    popular: false,
+  },
+];
+
 

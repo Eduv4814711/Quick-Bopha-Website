@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GraduationCap, CheckCircle2, CreditCard, UploadCloud, FileCheck, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -8,14 +8,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ACADEMY_COURSES } from "@/lib/constants";
+import { ACADEMY_COURSES, AcademyCourseItem } from "@/lib/constants";
 import { toast } from "sonner";
 
 export function AcademyEnrolmentStepper() {
+  const [courses, setCourses] = useState<AcademyCourseItem[]>(ACADEMY_COURSES);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCourseId, setSelectedCourseId] = useState("grade-c");
   const [intakeMonth, setIntakeMonth] = useState("First Monday of Upcoming Month");
   const [paymentOption, setPaymentOption] = useState<"deposit" | "full">("deposit");
+
+  useEffect(() => {
+    fetch("/api/admin/pricing")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && Array.isArray(data.academyCoursesPricing) && data.academyCoursesPricing.length > 0) {
+          setCourses(data.academyCoursesPricing);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const [studentData, setStudentData] = useState({
     fullName: "",
@@ -31,7 +43,7 @@ export function AcademyEnrolmentStepper() {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [enrolmentRef, setEnrolmentRef] = useState("");
 
-  const activeCourse = ACADEMY_COURSES.find((c) => c.id === selectedCourseId) || ACADEMY_COURSES[2];
+  const activeCourse = courses.find((c) => c.id === selectedCourseId) || courses[2];
   const payableAmount = paymentOption === "deposit" ? activeCourse.depositZar : activeCourse.priceZar;
 
   const validateStep2 = () => {
@@ -204,7 +216,7 @@ export function AcademyEnrolmentStepper() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {ACADEMY_COURSES.map((course) => (
+                        {courses.map((course) => (
                           <SelectItem key={course.id} value={course.id}>
                             {course.name} — R {course.priceZar.toLocaleString("en-ZA")} ({course.duration})
                           </SelectItem>

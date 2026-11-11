@@ -1,16 +1,29 @@
 import fs from "node:fs";
 import path from "node:path";
+import {
+  DEFAULT_PUBLIC_GUARD_RATES,
+  DEFAULT_SERVICE_CATEGORIES,
+  DEFAULT_ALARM_PACKAGES,
+  ACADEMY_COURSES,
+  PublicGuardRateTier,
+  ServiceCategoryItem,
+  AlarmPackageItem,
+  AcademyCourseItem,
+} from "./constants";
 
-export interface PublicGuardRateTier {
-  id: string;
-  grade: "Grade A" | "Grade B" | "Grade C" | "Grade D / E";
-  title: string;
-  subtitle: string;
-  monthlyPricePerGuardZar: number;
-  billingNote: string;
-  popular?: boolean;
-  features: string[];
-}
+export type {
+  PublicGuardRateTier,
+  ServiceCategoryItem,
+  AlarmPackageItem,
+  AcademyCourseItem,
+};
+
+export {
+  DEFAULT_PUBLIC_GUARD_RATES,
+  DEFAULT_SERVICE_CATEGORIES,
+  DEFAULT_ALARM_PACKAGES,
+  ACADEMY_COURSES,
+};
 
 export interface QuoteAuditItem {
   id: string;
@@ -64,6 +77,9 @@ export interface CareerAuditItem {
 
 export interface AdminStoreData {
   publicGuardPricing: PublicGuardRateTier[];
+  serviceCategoriesPricing: ServiceCategoryItem[];
+  alarmPackagesPricing: AlarmPackageItem[];
+  academyCoursesPricing: AcademyCourseItem[];
   auditLogs: {
     quotes: QuoteAuditItem[];
     tenders: TenderAuditItem[];
@@ -72,75 +88,11 @@ export interface AdminStoreData {
   };
 }
 
-export const DEFAULT_PUBLIC_GUARD_RATES: PublicGuardRateTier[] = [
-  {
-    id: "grade-d-e",
-    grade: "Grade D / E",
-    title: "Access Control & Perimeter Guard",
-    subtitle: "PSiRA Grade D & E Certified",
-    monthlyPricePerGuardZar: 9450,
-    billingNote: "Per guard / month (excl. VAT)",
-    popular: false,
-    features: [
-      "100% NBCPSS statutory wage & PSSPF compliant",
-      "Gate access register & biometric turnstile control",
-      "Hourly 24/7 Control Room radio welfare check-ins",
-      "Full tactical uniform, baton, torch & PPE issued",
-      "Digital Occurrence Book (OB) incident logging",
-    ],
-  },
-  {
-    id: "grade-c",
-    grade: "Grade C",
-    title: "Commercial, Municipal & Agri Guard",
-    subtitle: "PSiRA Grade C • Core Industry Standard",
-    monthlyPricePerGuardZar: 10372,
-    billingNote: "Per guard / month (excl. VAT)",
-    popular: true,
-    features: [
-      "100% NBCPSS statutory wage & benefit compliance",
-      "Armed or unarmed protection for commercial & farm sites",
-      "Live Plethora GPS patrol checkpoint telemetry",
-      "24/7 roving Area Supervisor post inspections",
-      "Sub-5 min Armed Response & P1/P2 escalation link",
-    ],
-  },
-  {
-    id: "grade-b",
-    grade: "Grade B",
-    title: "Shift Supervisor & Tactical Senior",
-    subtitle: "PSiRA Grade B Supervisory Command",
-    monthlyPricePerGuardZar: 11350,
-    billingNote: "Per guard / month (excl. VAT)",
-    popular: false,
-    features: [
-      "On-site shift roster command & post inspections",
-      "High-risk mining, substation & industrial asset defense",
-      "SAPS FCA Act 60 of 2000 firearm competency verified",
-      "Formal incident investigation & Section 24 reporting",
-      "Direct VHF/GSM priority link to Operational Manager",
-    ],
-  },
-  {
-    id: "grade-a",
-    grade: "Grade A",
-    title: "Site Commander & Close Protection",
-    subtitle: "PSiRA Grade A Executive Risk Officer",
-    monthlyPricePerGuardZar: 12450,
-    billingNote: "Per guard / month (excl. VAT)",
-    popular: false,
-    features: [
-      "Senior Site Commander & VIP Close Protection (CPO)",
-      "Site-specific HIRA risk assessments & SLA governance",
-      "Multi-post command, client liaison & audit pack sign-off",
-      "Tactical convoy escort & high-value asset protection",
-      "Priority P1 executive escalation line to Managing Director",
-    ],
-  },
-];
-
 const INITIAL_STORE_DATA: AdminStoreData = {
   publicGuardPricing: DEFAULT_PUBLIC_GUARD_RATES,
+  serviceCategoriesPricing: DEFAULT_SERVICE_CATEGORIES,
+  alarmPackagesPricing: DEFAULT_ALARM_PACKAGES,
+  academyCoursesPricing: ACADEMY_COURSES,
   auditLogs: {
     quotes: [
       {
@@ -208,9 +160,24 @@ export function readAdminStore(): AdminStoreData {
   try {
     if (fs.existsSync(STORE_PATH)) {
       const raw = fs.readFileSync(STORE_PATH, "utf-8");
-      const parsed = JSON.parse(raw) as AdminStoreData;
-      memoryStore = parsed;
-      return parsed;
+      const parsed = JSON.parse(raw) as Partial<AdminStoreData>;
+      const merged: AdminStoreData = {
+        publicGuardPricing: parsed.publicGuardPricing?.length
+          ? parsed.publicGuardPricing
+          : DEFAULT_PUBLIC_GUARD_RATES,
+        serviceCategoriesPricing: parsed.serviceCategoriesPricing?.length
+          ? parsed.serviceCategoriesPricing
+          : DEFAULT_SERVICE_CATEGORIES,
+        alarmPackagesPricing: parsed.alarmPackagesPricing?.length
+          ? parsed.alarmPackagesPricing
+          : DEFAULT_ALARM_PACKAGES,
+        academyCoursesPricing: parsed.academyCoursesPricing?.length
+          ? parsed.academyCoursesPricing
+          : ACADEMY_COURSES,
+        auditLogs: parsed.auditLogs || INITIAL_STORE_DATA.auditLogs,
+      };
+      memoryStore = merged;
+      return merged;
     }
     writeAdminStore(memoryStore);
     return memoryStore;
@@ -231,11 +198,27 @@ export function writeAdminStore(data: AdminStoreData): void {
   }
 }
 
-export function updatePublicGuardPricing(tiers: PublicGuardRateTier[]): PublicGuardRateTier[] {
+export function updateAllPricing(payload: {
+  publicGuardPricing?: PublicGuardRateTier[];
+  serviceCategoriesPricing?: ServiceCategoryItem[];
+  alarmPackagesPricing?: AlarmPackageItem[];
+  academyCoursesPricing?: AcademyCourseItem[];
+}): AdminStoreData {
   const store = readAdminStore();
-  store.publicGuardPricing = tiers;
+  if (Array.isArray(payload.publicGuardPricing) && payload.publicGuardPricing.length > 0) {
+    store.publicGuardPricing = payload.publicGuardPricing;
+  }
+  if (Array.isArray(payload.serviceCategoriesPricing) && payload.serviceCategoriesPricing.length > 0) {
+    store.serviceCategoriesPricing = payload.serviceCategoriesPricing;
+  }
+  if (Array.isArray(payload.alarmPackagesPricing) && payload.alarmPackagesPricing.length > 0) {
+    store.alarmPackagesPricing = payload.alarmPackagesPricing;
+  }
+  if (Array.isArray(payload.academyCoursesPricing) && payload.academyCoursesPricing.length > 0) {
+    store.academyCoursesPricing = payload.academyCoursesPricing;
+  }
   writeAdminStore(store);
-  return store.publicGuardPricing;
+  return store;
 }
 
 export function appendQuoteLog(item: Omit<QuoteAuditItem, "id">): void {
@@ -273,4 +256,3 @@ export function appendCareerLog(item: Omit<CareerAuditItem, "id">): void {
   });
   writeAdminStore(store);
 }
-

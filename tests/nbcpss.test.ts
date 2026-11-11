@@ -3,7 +3,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { calculateNBCPSSQuote } from "../src/lib/nbcpss-calculator";
 import { STATUTORY_DOCUMENTS } from "../src/lib/compliance-vault";
-import { DEFAULT_PUBLIC_GUARD_RATES } from "../src/lib/admin-store";
+import {
+  DEFAULT_PUBLIC_GUARD_RATES,
+  DEFAULT_SERVICE_CATEGORIES,
+  DEFAULT_ALARM_PACKAGES,
+  ACADEMY_COURSES,
+} from "../src/lib/admin-store";
 import {
   COMPANY_DETAILS,
   TRI_DIVISIONS,
@@ -75,9 +80,12 @@ assert.strictEqual(customOverheadQuote.overheadPercentage, 25);
 assert.ok(customOverheadQuote.monthlyCostPerPost > quoteArea3GradeC.monthlyCostPerPost);
 console.log(`✓ Grade C 24/7 Rate per post (18% overhead): R ${quoteArea3GradeC.monthlyCostPerPost} | (25% overhead): R ${customOverheadQuote.monthlyCostPerPost}`);
 
-// Test 4: Public Per-Guard Pricing Cards & Removal of Estimator from Public Pages
-console.log("\n[TEST 4] Verifying Public Guard Pricing Tiers & Admin-Only Estimator Isolation...");
+// Test 4: Public Per-Guard, Services, Alarms & Academy Pricing Catalogs + Admin Isolation
+console.log("\n[TEST 4] Verifying Master Pricing Catalogs (Guards, Services, Alarms, Academy) & Admin Isolation...");
 assert.strictEqual(DEFAULT_PUBLIC_GUARD_RATES.length, 4);
+assert.strictEqual(DEFAULT_SERVICE_CATEGORIES.length, 4);
+assert.strictEqual(DEFAULT_ALARM_PACKAGES.length, 3);
+assert.strictEqual(ACADEMY_COURSES.length, 7);
 assert.deepStrictEqual(
   DEFAULT_PUBLIC_GUARD_RATES.map((r) => r.grade),
   ["Grade D / E", "Grade C", "Grade B", "Grade A"]

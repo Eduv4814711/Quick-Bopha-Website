@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# AWS Amplify deployment artifacts
+/.amplify-hosting/
+/.amplify-bundle/
+deploy.zip
+
