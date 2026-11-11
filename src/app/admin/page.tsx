@@ -472,26 +472,45 @@ export default function AdminPortalPage() {
                       )}
                     </div>
 
+                    <div className="space-y-1">
+                      <Label className="text-xs font-bold text-[#0B1340]">Card Title</Label>
+                      <Input
+                        value={tier.title}
+                        onChange={(e) => handleGuardPriceChange(tier.id, "title", e.target.value)}
+                        className="h-9 text-xs bg-white border-slate-300"
+                      />
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <Label className="text-xs font-bold text-[#0B1340]">Card Title</Label>
-                        <Input
-                          value={tier.title}
-                          onChange={(e) => handleGuardPriceChange(tier.id, "title", e.target.value)}
-                          className="h-9 text-xs bg-white border-slate-300"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <Label className="text-xs font-bold text-red-600">Monthly Price Per Guard (ZAR)</Label>
+                        <Label className="text-xs font-bold text-red-600">Area 3 Rate (ZAR)</Label>
                         <Input
                           type="number"
+                          step="0.01"
                           min={0}
                           value={tier.monthlyPricePerGuardZar}
                           onChange={(e) =>
                             handleGuardPriceChange(
                               tier.id,
                               "monthlyPricePerGuardZar",
-                              parseInt(e.target.value) || 0
+                              parseFloat(e.target.value) || 0
+                            )
+                          }
+                          className="h-9 text-xs font-mono font-bold bg-white border-slate-300 text-[#0B1340]"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs font-bold text-[#0B1340]">Area 1 &amp; 2 Rate (ZAR)</Label>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min={0}
+                          value={tier.area1And2PricePerGuardZar}
+                          onChange={(e) =>
+                            handleGuardPriceChange(
+                              tier.id,
+                              "area1And2PricePerGuardZar",
+                              parseFloat(e.target.value) || 0
                             )
                           }
                           className="h-9 text-xs font-mono font-bold bg-white border-slate-300 text-[#0B1340]"
@@ -556,27 +575,37 @@ export default function AdminPortalPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <Label className="text-xs font-bold text-red-600">Starting Price (ZAR)</Label>
+                        <Label className="text-xs font-bold text-red-600">Area 3 Rate (ZAR)</Label>
                         <Input
                           type="number"
+                          step="0.01"
                           min={0}
                           value={svc.startingPriceZar}
                           onChange={(e) =>
                             handleServicePriceChange(
                               svc.id,
                               "startingPriceZar",
-                              parseInt(e.target.value) || 0
+                              parseFloat(e.target.value) || 0
                             )
                           }
                           className="h-9 text-xs font-mono font-bold bg-white border-slate-300 text-[#0B1340]"
                         />
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-xs font-semibold text-slate-600">Billing Unit</Label>
+                        <Label className="text-xs font-bold text-[#0B1340]">Area 1 &amp; 2 Rate (ZAR)</Label>
                         <Input
-                          value={svc.billingUnit}
-                          onChange={(e) => handleServicePriceChange(svc.id, "billingUnit", e.target.value)}
-                          className="h-9 text-xs bg-white border-slate-300"
+                          type="number"
+                          step="0.01"
+                          min={0}
+                          value={svc.area1And2PriceZar}
+                          onChange={(e) =>
+                            handleServicePriceChange(
+                              svc.id,
+                              "area1And2PriceZar",
+                              parseFloat(e.target.value) || 0
+                            )
+                          }
+                          className="h-9 text-xs font-mono font-bold bg-white border-slate-300 text-[#0B1340]"
                         />
                       </div>
                     </div>

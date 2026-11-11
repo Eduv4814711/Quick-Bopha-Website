@@ -64,13 +64,13 @@ export default function ServicesPage() {
                       </div>
                       <div className="text-right">
                         <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                          Starting Rate
+                          Area 3 Direct Rate
                         </div>
                         <div className="text-xl font-black text-red-600 font-mono">
-                          From R {svc.startingPriceZar.toLocaleString("en-ZA")}
+                          R {Number(svc.startingPriceZar).toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
-                        <div className="text-[11px] font-semibold text-slate-500">
-                          {svc.billingUnit}
+                        <div className="text-[11px] font-semibold text-[#0B1340] font-mono">
+                          Area 1 &amp; 2: R {Number(svc.area1And2PriceZar || svc.startingPriceZar).toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
                       </div>
                     </div>

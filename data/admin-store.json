@@ -5,8 +5,9 @@
       "grade": "Grade D / E",
       "title": "Access Control & Perimeter Guard",
       "subtitle": "PSiRA Grade D & E Certified",
-      "monthlyPricePerGuardZar": 9450,
-      "billingNote": "Per guard / month (excl. VAT)",
+      "monthlyPricePerGuardZar": 17787.16,
+      "area1And2PricePerGuardZar": 18479.61,
+      "billingNote": "Per guard / month (Excluding VAT)",
       "popular": false,
       "features": [
         "100% NBCPSS statutory wage & PSSPF compliant",
@@ -19,15 +20,16 @@
     {
       "id": "grade-c",
       "grade": "Grade C",
-      "title": "Commercial, Municipal & Agri Guard",
+      "title": "Commercial, Municipal & Agricultural Guard",
       "subtitle": "PSiRA Grade C • Core Industry Standard",
-      "monthlyPricePerGuardZar": 10372,
-      "billingNote": "Per guard / month (excl. VAT)",
+      "monthlyPricePerGuardZar": 17787.16,
+      "area1And2PricePerGuardZar": 18479.61,
+      "billingNote": "Per guard / month (Excluding VAT)",
       "popular": true,
       "features": [
         "100% NBCPSS statutory wage & benefit compliance",
         "Armed or unarmed protection for commercial & farm sites",
-        "Live Plethora GPS patrol checkpoint telemetry",
+        "24/7 Control Room telemetry & welfare monitoring",
         "24/7 roving Area Supervisor post inspections",
         "Sub-5 min Armed Response & P1/P2 escalation link"
       ]
@@ -37,8 +39,9 @@
       "grade": "Grade B",
       "title": "Shift Supervisor & Tactical Senior",
       "subtitle": "PSiRA Grade B Supervisory Command",
-      "monthlyPricePerGuardZar": 11350,
-      "billingNote": "Per guard / month (excl. VAT)",
+      "monthlyPricePerGuardZar": 17787.16,
+      "area1And2PricePerGuardZar": 19989.5,
+      "billingNote": "Per guard / month (Excluding VAT)",
       "popular": false,
       "features": [
         "On-site shift roster command & post inspections",
@@ -53,8 +56,9 @@
       "grade": "Grade A",
       "title": "Site Commander & Close Protection",
       "subtitle": "PSiRA Grade A Executive Risk Officer",
-      "monthlyPricePerGuardZar": 12450,
-      "billingNote": "Per guard / month (excl. VAT)",
+      "monthlyPricePerGuardZar": 18827.08,
+      "area1And2PricePerGuardZar": 21431.9,
+      "billingNote": "Per guard / month (VAT status per contract)",
       "popular": false,
       "features": [
         "Senior Site Commander & VIP Close Protection (CPO)",
@@ -63,6 +67,190 @@
         "Tactical convoy escort & high-value asset protection",
         "Priority P1 executive escalation line to Managing Director"
       ]
+    }
+  ],
+  "serviceCategoriesPricing": [
+    {
+      "id": "static-commercial",
+      "title": "Static Commercial & Industrial Guarding",
+      "iconName": "Warehouse",
+      "startingPriceZar": 17787.16,
+      "area1And2PriceZar": 18479.61,
+      "billingUnit": "Area 3: R 17,787.16 | Area 1 & 2: R 18,479.61 (Excl. VAT)",
+      "description": "24/7 post defence and perimeter security for commercial depots, retail centers, warehouses, and municipal complexes.",
+      "points": [
+        "PSiRA Grade D/E & C armed or unarmed security officers",
+        "Biometric turnstile and vehicle scale access control",
+        "Digital Occurrence Book (OB) real-time incident transmission",
+        "Continuous supervision via roving tactical fleet commanders"
+      ]
+    },
+    {
+      "id": "agri-rural",
+      "title": "Agricultural & Rural Farm Security",
+      "iconName": "Tractor",
+      "startingPriceZar": 17787.16,
+      "area1And2PriceZar": 18479.61,
+      "billingUnit": "Area 3: R 17,787.16 | Area 1 & 2: R 18,479.61 (Excl. VAT)",
+      "description": "Specialized rural anti-intrusion patrols safeguarding grain silos, livestock herds, and farmsteads along the N12 corridor.",
+      "points": [
+        "Thermal night vision and perimeter spotlight units",
+        "Livestock theft mitigation & boundary fence patrols",
+        "Direct radio link to local farm watch & SAPS Sector policing",
+        "Solar-backed wireless intrusion sensor monitoring"
+      ]
+    },
+    {
+      "id": "mining-infrastructure",
+      "title": "Mining Concession & Critical Infrastructure",
+      "iconName": "HardHat",
+      "startingPriceZar": 17787.16,
+      "area1And2PriceZar": 19989.5,
+      "billingUnit": "Area 3: R 17,787.16 | Area 1 & 2: R 19,989.50 (Excl. VAT)",
+      "description": "High-security access protocols and Grade B supervisory protection engineered for North West mining operations and municipal utility substations.",
+      "points": [
+        "Gold, diamond, and heavy equipment asset protection",
+        "Randomized drug/alcohol breathalyzer gate screening",
+        "Strike, protest, and labor dispute crowd de-escalation",
+        "Copper cable theft and transformer substation defense"
+      ]
+    },
+    {
+      "id": "vip-convoy",
+      "title": "VIP Close Protection & Site Command (Grade A)",
+      "iconName": "Car",
+      "startingPriceZar": 18827.08,
+      "area1And2PriceZar": 21431.9,
+      "billingUnit": "Area 3: R 18,827.08 | Area 1 & 2: R 21,431.90",
+      "description": "Armed executive escort, Grade A Site Command, and VIP transit security across the Dr Kenneth Kaunda District and inter-provincial corridors.",
+      "points": [
+        "Tactical Close Protection Officers (CPOs) with Grade A certification",
+        "Armored ballistic vehicle convoys & secure transport",
+        "Advance route reconnaissance & counter-ambush planning",
+        "Discreet, protocol-trained executive personal protection"
+      ]
+    }
+  ],
+  "alarmPackagesPricing": [
+    {
+      "id": "alarm-residential",
+      "name": "Residential & Family Estate",
+      "badge": "Homeowners",
+      "monthlyPriceZar": 495,
+      "billingUnit": "/ month",
+      "description": "Complete perimeter and interior alarm monitoring with dedicated armed tactical dispatch in Wolmaransstad.",
+      "features": [
+        "24/7 Control Room active alarm monitoring",
+        "Sub-5 minute armed response guarantee in municipal zone",
+        "Mobile App panic button & remote arm/disarm",
+        "Load-shedding backup battery telemetry",
+        "Free monthly test signal verification"
+      ],
+      "popular": false
+    },
+    {
+      "id": "alarm-agricultural",
+      "name": "Agricultural Farmstead Security",
+      "badge": "Most Popular",
+      "monthlyPriceZar": 850,
+      "billingUnit": "/ month",
+      "description": "Engineered specifically for farms, smallholdings, and remote homesteads along the N12 corridor.",
+      "features": [
+        "Solar-powered outdoor perimeter motion beams",
+        "Long-range radio repeater telemetry (No GSM dead zones)",
+        "Dedicated Farm Watch & rural response vehicle dispatch",
+        "Livestock enclosure gate sensor integration",
+        "SAPS Eyes & Ears (E2) coordinated incident response"
+      ],
+      "popular": true
+    },
+    {
+      "id": "alarm-commercial",
+      "name": "Commercial & Retail Smart Safe",
+      "badge": "Business & Retail",
+      "monthlyPriceZar": 1450,
+      "billingUnit": "/ month",
+      "description": "High-security cash handling, drop-box telematics, and multi-zone intrusion detection for businesses.",
+      "features": [
+        "Smart Safe digital cash drop monitoring with tamper alert",
+        "Cash-In-Transit (CIT) cash collection coordination",
+        "AI CCTV cloud camera health check & perimeter tripwire",
+        "Opening & closing schedule violation alerts",
+        "Priority VIP tactical armed response"
+      ],
+      "popular": false
+    }
+  ],
+  "academyCoursesPricing": [
+    {
+      "id": "grade-e",
+      "name": "PSiRA Grade E (Entry Guarding)",
+      "level": "Foundational Security Practice",
+      "duration": "1 Week (Full Time)",
+      "priceZar": 1150,
+      "depositZar": 350,
+      "prerequisites": "South African ID / Valid Passport, Minimum Age 18",
+      "description": "Foundational guarding protocols, patrol inspection, basic legal principles, access register maintenance, and workplace safety compliance."
+    },
+    {
+      "id": "grade-d",
+      "name": "PSiRA Grade D (Access Control & Patrolling)",
+      "level": "Operational Patrolling",
+      "duration": "1 Week (Full Time)",
+      "priceZar": 1250,
+      "depositZar": 400,
+      "prerequisites": "PSiRA Grade E Certificate",
+      "description": "Gate access management, biometric turnstile operations, vehicle search protocols, emergency radio communication, and incident report writing."
+    },
+    {
+      "id": "grade-c",
+      "name": "PSiRA Grade C (Armed Protection & Sites)",
+      "level": "Core Industry Standard",
+      "duration": "1 Week (Full Time)",
+      "priceZar": 1450,
+      "depositZar": 500,
+      "prerequisites": "PSiRA Grade D Certificate",
+      "description": "The benchmark standard for commercial, municipal, and industrial guarding. Advanced incident intervention, legal rights of arrest, and site defense."
+    },
+    {
+      "id": "grade-b",
+      "name": "PSiRA Grade B (Shift Supervisor & Site Commander)",
+      "level": "Supervisory",
+      "duration": "2 Weeks (Full Time)",
+      "priceZar": 1950,
+      "depositZar": 600,
+      "prerequisites": "PSiRA Grade C Certificate + 1 Year Experience",
+      "description": "Shift roster command, incident investigation, officer inspection, client liaison, post inspections, and statutory compliance enforcement."
+    },
+    {
+      "id": "grade-a",
+      "name": "PSiRA Grade A (Security Risk Manager & Director)",
+      "level": "Executive & Management",
+      "duration": "2 Weeks (Full Time)",
+      "priceZar": 2500,
+      "depositZar": 800,
+      "prerequisites": "PSiRA Grade B Certificate",
+      "description": "Security risk assessment, physical security survey formulation, emergency contingency planning, labor relations, and enterprise contract management."
+    },
+    {
+      "id": "armed-response",
+      "name": "Tactical Armed Response Specialist",
+      "level": "Specialized Tactical",
+      "duration": "2 Weeks (Intensive)",
+      "priceZar": 2800,
+      "depositZar": 900,
+      "prerequisites": "PSiRA Grade C + Firearm Competency (Handgun & Shotgun)",
+      "description": "Vehicle pursuit tactics, building penetration under alarm trigger, high-stress weapon retention, legal use of lethal force, and tactical disengagement."
+    },
+    {
+      "id": "cit-specialist",
+      "name": "Cash-In-Transit (CIT) Tactical Escort",
+      "level": "High-Risk Specialized",
+      "duration": "2 Weeks (Intensive)",
+      "priceZar": 3200,
+      "depositZar": 1000,
+      "prerequisites": "PSiRA Grade C + Business Firearm Competency",
+      "description": "Armored bullion transport, drop-box cash transfer drills, ambush counter-measures, high-caliber rifle deployment, and tactical convoy coordination."
     }
   ],
   "auditLogs": {
@@ -76,8 +264,8 @@
         "shiftType": "rotational_24_7",
         "officerCount": 4,
         "area": "Area 3 (Rural / Agri / N12 Corridor)",
-        "monthlyCostPerPost": 10372,
-        "totalMonthlyContractCost": 41488,
+        "monthlyCostPerPost": 17787.16,
+        "totalMonthlyContractCost": 71148.64,
         "timestamp": "2026-11-10T14:20:00.000Z"
       }
     ],

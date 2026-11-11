@@ -49,8 +49,8 @@ assert.deepStrictEqual(
 );
 console.log("✓ Tri-Division structure verified (Guarding, Alarms, Academy).");
 
-// Test 3: NBCPSS Calculation Engine (Grade C, Rotational 24/7 in Area 3 + Custom Admin Overhead)
-console.log("\n[TEST 3] Verifying Admin NBCPSS Statutory Rate Calculation (Grade C, 24/7)...");
+// Test 3: NBCPSS Calculation Engine (Official Area 3 & Area 1&2 Direct Cost Rates)
+console.log("\n[TEST 3] Verifying Official Direct Cost Rates (Area 3 & Area 1&2)...");
 const quoteArea3GradeC = calculateNBCPSSQuote({
   grade: "Grade C",
   shiftType: "rotational_24_7",
@@ -59,14 +59,28 @@ const quoteArea3GradeC = calculateNBCPSSQuote({
   locationName: "Wolmaransstad / Maquassi Hills",
 });
 
-assert.strictEqual(quoteArea3GradeC.basicSalaryPerOfficer, 5520);
-assert.strictEqual(quoteArea3GradeC.statutoryBenefitsPerOfficer, 1573);
+assert.strictEqual(quoteArea3GradeC.monthlyCostPerPost, 17787.16);
+assert.strictEqual(quoteArea3GradeC.totalMonthlyContractCost, 71148.64);
 assert.strictEqual(quoteArea3GradeC.reliefMultiplier, 1.222);
-assert.strictEqual(quoteArea3GradeC.overheadPercentage, 18);
-assert.strictEqual(
-  quoteArea3GradeC.totalMonthlyContractCost,
-  quoteArea3GradeC.monthlyCostPerPost * 4
-);
+
+const quoteArea12GradeB = calculateNBCPSSQuote({
+  grade: "Grade B",
+  shiftType: "rotational_24_7",
+  officerCount: 2,
+  area: "Area 1 & 2 (Urban & Metros)",
+  locationName: "Klerksdorp / Potchefstroom",
+});
+assert.strictEqual(quoteArea12GradeB.monthlyCostPerPost, 19989.5);
+assert.strictEqual(quoteArea12GradeB.totalMonthlyContractCost, 39979);
+
+const quoteArea12GradeA = calculateNBCPSSQuote({
+  grade: "Grade A",
+  shiftType: "rotational_24_7",
+  officerCount: 1,
+  area: "Area 1 & 2 (Urban & Metros)",
+  locationName: "Klerksdorp / Potchefstroom",
+});
+assert.strictEqual(quoteArea12GradeA.monthlyCostPerPost, 21431.9);
 
 const customOverheadQuote = calculateNBCPSSQuote({
   grade: "Grade C",
@@ -78,7 +92,7 @@ const customOverheadQuote = calculateNBCPSSQuote({
 });
 assert.strictEqual(customOverheadQuote.overheadPercentage, 25);
 assert.ok(customOverheadQuote.monthlyCostPerPost > quoteArea3GradeC.monthlyCostPerPost);
-console.log(`✓ Grade C 24/7 Rate per post (18% overhead): R ${quoteArea3GradeC.monthlyCostPerPost} | (25% overhead): R ${customOverheadQuote.monthlyCostPerPost}`);
+console.log(`✓ Area 3 Grade C Rate: R ${quoteArea3GradeC.monthlyCostPerPost.toFixed(2)} | Area 1&2 Grade B Rate: R ${quoteArea12GradeB.monthlyCostPerPost.toFixed(2)} | Area 1&2 Grade A Rate: R ${quoteArea12GradeA.monthlyCostPerPost.toFixed(2)}`);
 
 // Test 4: Public Per-Guard, Services, Alarms & Academy Pricing Catalogs + Admin Isolation
 console.log("\n[TEST 4] Verifying Master Pricing Catalogs (Guards, Services, Alarms, Academy) & Admin Isolation...");

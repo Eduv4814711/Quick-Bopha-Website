@@ -18,6 +18,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.quickbophasecurity.co.za"),
+  alternates: {
+    canonical: "/",
+  },
   title: "Quick Bopha Security | We Guard With Pride | North West & N12 Corridor",
   description:
     "Enterprise-grade private security services, 24/7 armed response, smart safes, and PSiRA accredited training academy headquartered in Wolmaransstad, Maquassi Hills, North West Province. 100% Black-Owned, Level 1 B-BBEE, 100% NBCPSS Statutory Wage Compliant.",

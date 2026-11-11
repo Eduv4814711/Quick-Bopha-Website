@@ -411,6 +411,7 @@ export interface PublicGuardRateTier {
   title: string;
   subtitle: string;
   monthlyPricePerGuardZar: number;
+  area1And2PricePerGuardZar: number;
   billingNote: string;
   popular?: boolean;
   features: string[];
@@ -422,8 +423,9 @@ export const DEFAULT_PUBLIC_GUARD_RATES: PublicGuardRateTier[] = [
     grade: "Grade D / E",
     title: "Access Control & Perimeter Guard",
     subtitle: "PSiRA Grade D & E Certified",
-    monthlyPricePerGuardZar: 9450,
-    billingNote: "Per guard / month (excl. VAT)",
+    monthlyPricePerGuardZar: 17787.16,
+    area1And2PricePerGuardZar: 18479.61,
+    billingNote: "Per guard / month (Excluding VAT)",
     popular: false,
     features: [
       "100% NBCPSS statutory wage & PSSPF compliant",
@@ -436,15 +438,16 @@ export const DEFAULT_PUBLIC_GUARD_RATES: PublicGuardRateTier[] = [
   {
     id: "grade-c",
     grade: "Grade C",
-    title: "Commercial, Municipal & Agri Guard",
+    title: "Commercial, Municipal & Agricultural Guard",
     subtitle: "PSiRA Grade C • Core Industry Standard",
-    monthlyPricePerGuardZar: 10372,
-    billingNote: "Per guard / month (excl. VAT)",
+    monthlyPricePerGuardZar: 17787.16,
+    area1And2PricePerGuardZar: 18479.61,
+    billingNote: "Per guard / month (Excluding VAT)",
     popular: true,
     features: [
       "100% NBCPSS statutory wage & benefit compliance",
       "Armed or unarmed protection for commercial & farm sites",
-      "Live Plethora GPS patrol checkpoint telemetry",
+      "24/7 Control Room telemetry & welfare monitoring",
       "24/7 roving Area Supervisor post inspections",
       "Sub-5 min Armed Response & P1/P2 escalation link",
     ],
@@ -454,8 +457,9 @@ export const DEFAULT_PUBLIC_GUARD_RATES: PublicGuardRateTier[] = [
     grade: "Grade B",
     title: "Shift Supervisor & Tactical Senior",
     subtitle: "PSiRA Grade B Supervisory Command",
-    monthlyPricePerGuardZar: 11350,
-    billingNote: "Per guard / month (excl. VAT)",
+    monthlyPricePerGuardZar: 17787.16,
+    area1And2PricePerGuardZar: 19989.50,
+    billingNote: "Per guard / month (Excluding VAT)",
     popular: false,
     features: [
       "On-site shift roster command & post inspections",
@@ -470,8 +474,9 @@ export const DEFAULT_PUBLIC_GUARD_RATES: PublicGuardRateTier[] = [
     grade: "Grade A",
     title: "Site Commander & Close Protection",
     subtitle: "PSiRA Grade A Executive Risk Officer",
-    monthlyPricePerGuardZar: 12450,
-    billingNote: "Per guard / month (excl. VAT)",
+    monthlyPricePerGuardZar: 18827.08,
+    area1And2PricePerGuardZar: 21431.90,
+    billingNote: "Per guard / month (VAT status per contract)",
     popular: false,
     features: [
       "Senior Site Commander & VIP Close Protection (CPO)",
@@ -488,6 +493,7 @@ export interface ServiceCategoryItem {
   title: string;
   iconName: "Warehouse" | "Tractor" | "HardHat" | "Car";
   startingPriceZar: number;
+  area1And2PriceZar: number;
   billingUnit: string;
   description: string;
   points: string[];
@@ -498,12 +504,13 @@ export const DEFAULT_SERVICE_CATEGORIES: ServiceCategoryItem[] = [
     id: "static-commercial",
     title: "Static Commercial & Industrial Guarding",
     iconName: "Warehouse",
-    startingPriceZar: 9450,
-    billingUnit: "per guard / month (excl. VAT)",
+    startingPriceZar: 17787.16,
+    area1And2PriceZar: 18479.61,
+    billingUnit: "Area 3: R 17,787.16 | Area 1 & 2: R 18,479.61 (Excl. VAT)",
     description:
       "24/7 post defence and perimeter security for commercial depots, retail centers, warehouses, and municipal complexes.",
     points: [
-      "PSiRA Grade A, B, and C armed or unarmed officers",
+      "PSiRA Grade D/E & C armed or unarmed security officers",
       "Biometric turnstile and vehicle scale access control",
       "Digital Occurrence Book (OB) real-time incident transmission",
       "Continuous supervision via roving tactical fleet commanders",
@@ -513,8 +520,9 @@ export const DEFAULT_SERVICE_CATEGORIES: ServiceCategoryItem[] = [
     id: "agri-rural",
     title: "Agricultural & Rural Farm Security",
     iconName: "Tractor",
-    startingPriceZar: 10372,
-    billingUnit: "per guard / month (excl. VAT)",
+    startingPriceZar: 17787.16,
+    area1And2PriceZar: 18479.61,
+    billingUnit: "Area 3: R 17,787.16 | Area 1 & 2: R 18,479.61 (Excl. VAT)",
     description:
       "Specialized rural anti-intrusion patrols safeguarding grain silos, livestock herds, and farmsteads along the N12 corridor.",
     points: [
@@ -528,10 +536,11 @@ export const DEFAULT_SERVICE_CATEGORIES: ServiceCategoryItem[] = [
     id: "mining-infrastructure",
     title: "Mining Concession & Critical Infrastructure",
     iconName: "HardHat",
-    startingPriceZar: 11350,
-    billingUnit: "per guard / month (excl. VAT)",
+    startingPriceZar: 17787.16,
+    area1And2PriceZar: 19989.50,
+    billingUnit: "Area 3: R 17,787.16 | Area 1 & 2: R 19,989.50 (Excl. VAT)",
     description:
-      "High-security access protocols and asset protection engineered for North West mining operations and municipal utility substations.",
+      "High-security access protocols and Grade B supervisory protection engineered for North West mining operations and municipal utility substations.",
     points: [
       "Gold, diamond, and heavy equipment asset protection",
       "Randomized drug/alcohol breathalyzer gate screening",
@@ -541,12 +550,13 @@ export const DEFAULT_SERVICE_CATEGORIES: ServiceCategoryItem[] = [
   },
   {
     id: "vip-convoy",
-    title: "VIP Close Protection & Convoy Escort",
+    title: "VIP Close Protection & Site Command (Grade A)",
     iconName: "Car",
-    startingPriceZar: 3500,
-    billingUnit: "per CPO officer / day (or R 12,450 / mo)",
+    startingPriceZar: 18827.08,
+    area1And2PriceZar: 21431.90,
+    billingUnit: "Area 3: R 18,827.08 | Area 1 & 2: R 21,431.90",
     description:
-      "Armed executive escort and VIP transit security across the Dr Kenneth Kaunda District and inter-provincial corridors.",
+      "Armed executive escort, Grade A Site Command, and VIP transit security across the Dr Kenneth Kaunda District and inter-provincial corridors.",
     points: [
       "Tactical Close Protection Officers (CPOs) with Grade A certification",
       "Armored ballistic vehicle convoys & secure transport",
