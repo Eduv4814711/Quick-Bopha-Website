@@ -273,3 +273,4 @@ export function appendCareerLog(item: Omit<CareerAuditItem, "id">): void {
   });
   writeAdminStore(store);
 }
+

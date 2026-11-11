@@ -49,3 +49,4 @@ export async function DELETE() {
   cookieStore.delete(SESSION_COOKIE);
   return NextResponse.json({ authenticated: false });
 }
+

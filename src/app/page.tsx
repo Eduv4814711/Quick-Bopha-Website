@@ -16,7 +16,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { StatutoryTrustBanner } from "@/components/shared/StatutoryTrustBanner";
 import { PublicGuardPricingCards } from "@/components/features/PublicGuardPricingCards";
-import { PlethoraTelemetryShowcase } from "@/components/features/PlethoraTelemetryShowcase";
 import { COMPANY_DETAILS, TRI_DIVISIONS, CORRIDOR_HUBS } from "@/lib/constants";
 
 export default function HomePage() {
@@ -185,15 +184,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PLETHORA AI TELEMETRY SHOWCASE (FEAT-05) */}
-      <section className="py-16 sm:py-22 bg-white px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <PlethoraTelemetryShowcase />
-        </div>
-      </section>
-
       {/* REGIONAL FOOTPRINT: WOLMARANSSTAD & THE N12 CORRIDOR */}
-      <section className="py-16 sm:py-22 bg-slate-50/80 px-4 sm:px-8 border-t border-slate-200">
+      <section className="py-16 sm:py-22 bg-white px-4 sm:px-8">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
             <Badge

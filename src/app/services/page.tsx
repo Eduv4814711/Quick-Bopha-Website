@@ -4,7 +4,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PublicGuardPricingCards } from "@/components/features/PublicGuardPricingCards";
 import { StatutoryTrustBanner } from "@/components/shared/StatutoryTrustBanner";
-import { PlethoraTelemetryShowcase } from "@/components/features/PlethoraTelemetryShowcase";
 
 export default function ServicesPage() {
   const serviceCategories = [
@@ -122,16 +121,9 @@ export default function ServicesPage() {
       </section>
 
       {/* PER-GUARD MONTHLY PRICING BY PSIRA GRADE */}
-      <section className="py-16 sm:py-20 bg-slate-50/80 px-4 sm:px-8 border-y border-slate-200">
+      <section className="py-16 sm:py-20 bg-slate-50/80 px-4 sm:px-8 border-t border-slate-200">
         <div className="max-w-7xl mx-auto">
           <PublicGuardPricingCards />
-        </div>
-      </section>
-
-      {/* PLETHORA AI TELEMETRY PROOF */}
-      <section className="py-16 sm:py-20 bg-white px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <PlethoraTelemetryShowcase />
         </div>
       </section>
     </div>
