@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Download, ShieldCheck, FileSpreadsheet, Clock } from "lucide-react";
+import { Download, ShieldCheck, FileSpreadsheet, Clock, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -20,14 +20,16 @@ import { toast } from "sonner";
 
 interface Props {
   condensed?: boolean;
+  onQuoteGenerated?: () => void;
 }
 
-export function NBCPSSRateCalculator({ condensed = false }: Props) {
+export function NBCPSSRateCalculator({ condensed = false, onQuoteGenerated }: Props) {
   const [grade, setGrade] = useState<GuardGrade>("Grade C");
   const [shiftType, setShiftType] = useState<ShiftType>("rotational_24_7");
   const [officerCount, setOfficerCount] = useState<number>(4);
   const [area, setArea] = useState<OperationalArea>("Area 3 (Rural / Agri / N12 Corridor)");
   const [locationName, setLocationName] = useState<string>("Wolmaransstad / Maquassi Hills");
+  const [overheadPercentage, setOverheadPercentage] = useState<number>(18);
   const [clientName, setClientName] = useState<string>("");
   const [clientEmail, setClientEmail] = useState<string>("");
   const [isExporting, setIsExporting] = useState(false);
@@ -39,10 +41,11 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
       officerCount: Math.max(1, officerCount || 1),
       area,
       locationName,
+      overheadPercentage,
       clientName: clientName || undefined,
       clientEmail: clientEmail || undefined,
     }),
-    [grade, shiftType, officerCount, area, locationName, clientName, clientEmail]
+    [grade, shiftType, officerCount, area, locationName, overheadPercentage, clientName, clientEmail]
   );
 
   const result = useMemo(() => calculateNBCPSSQuote(quoteInput), [quoteInput]);
@@ -58,7 +61,11 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
         body: JSON.stringify(result),
       });
 
-      toast.success("Official NBCPSS PDF Quote Exported! Copy routed to accounts@quickbopha.co.za");
+      if (onQuoteGenerated) {
+        onQuoteGenerated();
+      }
+
+      toast.success("Official NBCPSS PDF Quote Exported & Logged in Admin Audit Vault!");
     } catch {
       toast.info("PDF Quote downloaded successfully.");
     } finally {
@@ -76,31 +83,31 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
                 variant="outline"
                 className="border-red-200 text-red-700 bg-red-50 text-xs uppercase tracking-wider font-semibold"
               >
-                FEAT-01 • Statutory Costing
+                Internal Admin Tool • Statutory Costing Engine
               </Badge>
               <span className="text-xs text-slate-600 flex items-center gap-1 font-medium">
                 <Clock className="w-3.5 h-3.5 text-red-600" />
-                30-Second NBCPSS Calculator
+                Executive Bid &amp; Tender Calculator
               </span>
             </div>
             <CardTitle className="text-xl sm:text-2xl font-extrabold text-[#0B1340]">
               NBCPSS Statutory Guarding Rate Estimator
             </CardTitle>
             <CardDescription className="text-xs sm:text-sm text-slate-600">
-              Calculate mathematically verified, 100% statutory compliant private security rates per National Bargaining Council wage determination tables.
+              Internal executive costing engine for calculating 100% statutory compliant private security tender rates, relief multipliers, and operational margins.
             </CardDescription>
           </div>
 
           <div className="hidden sm:flex flex-col items-end text-xs text-slate-600 bg-white px-3.5 py-2 rounded-lg border border-slate-200">
             <span className="text-red-600 font-mono font-bold">1:4.5 Shift Relief Factor</span>
-            <span className="text-[#0B1340] font-medium">28.5% Statutory Benefits Loaded</span>
+            <span className="text-[#0B1340] font-medium">28.5% Statutory Benefits + {overheadPercentage}% Overhead</span>
           </div>
         </div>
       </CardHeader>
 
       <CardContent className="p-6 space-y-6 bg-white">
         {/* Configuration Inputs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Guard Grade */}
           <div className="space-y-2">
             <Label className="text-xs font-bold uppercase tracking-wider text-[#0B1340]">
@@ -150,18 +157,18 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
           {/* Officer Quantity */}
           <div className="space-y-2">
             <Label className="text-xs font-bold uppercase tracking-wider text-[#0B1340]">
-              3. Officer Quantity (Posts)
+              3. Officer Quantity
             </Label>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 min={1}
-                max={150}
+                max={250}
                 value={officerCount}
                 onChange={(e) => setOfficerCount(parseInt(e.target.value) || 1)}
                 className="h-10 text-xs font-bold border-slate-300 text-[#0B1340]"
               />
-              <span className="text-xs text-slate-600 font-medium whitespace-nowrap">Officers</span>
+              <span className="text-xs text-slate-600 font-medium whitespace-nowrap">Posts</span>
             </div>
           </div>
 
@@ -191,6 +198,25 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
               </SelectContent>
             </Select>
           </div>
+
+          {/* Admin Overhead / Margin % */}
+          <div className="space-y-2">
+            <Label className="text-xs font-bold uppercase tracking-wider text-[#0B1340] flex items-center gap-1">
+              <SlidersHorizontal className="w-3.5 h-3.5 text-red-600" />
+              5. Ops Overhead (%)
+            </Label>
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                min={5}
+                max={50}
+                value={overheadPercentage}
+                onChange={(e) => setOverheadPercentage(Math.max(0, parseInt(e.target.value) || 0))}
+                className="h-10 text-xs font-bold font-mono border-slate-300 text-red-600"
+              />
+              <span className="text-xs text-slate-600 font-semibold">%</span>
+            </div>
+          </div>
         </div>
 
         {/* Client & Organization Optional Fields for Quote Header */}
@@ -198,10 +224,10 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-200">
             <div className="space-y-1">
               <Label className="text-xs font-medium text-slate-700">
-                Company / Farm / Municipal Entity (Optional)
+                Target Client / Farm / Municipality Name (Printed on PDF Quote)
               </Label>
               <Input
-                placeholder="e.g. North West Agribusiness / Mining Corp"
+                placeholder="e.g. Maquassi Hills Local Municipality / North West Agribusiness"
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
                 className="h-9 text-xs border-slate-300"
@@ -209,11 +235,11 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
             </div>
             <div className="space-y-1">
               <Label className="text-xs font-medium text-slate-700">
-                Official Email (For Instant Quote Delivery)
+                Client Procurement Email (Optional)
               </Label>
               <Input
                 type="email"
-                placeholder="procurement@organization.co.za"
+                placeholder="scm@organization.co.za"
                 value={clientEmail}
                 onChange={(e) => setClientEmail(e.target.value)}
                 className="h-9 text-xs border-slate-300"
@@ -278,7 +304,7 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-11 text-xs gap-2 shadow-sm"
               >
                 <Download className="w-4 h-4" />
-                {isExporting ? "Compiling PDF..." : "Export Statutory PDF Quote"}
+                {isExporting ? "Compiling PDF..." : "Export Official PDF Quote"}
               </Button>
             </div>
           </div>
@@ -288,7 +314,7 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
             <div className="flex items-center justify-between">
               <div className="text-xs font-bold uppercase tracking-wider text-[#0B1340] flex items-center gap-1.5">
                 <FileSpreadsheet className="w-4 h-4 text-red-600" />
-                Statutory Itemized Cost Build-Up (Per Guard Post)
+                Internal Statutory Cost Build-Up (Per Guard Post)
               </div>
               <span className="text-[11px] text-slate-500 font-mono">
                 Ref: {result.quoteReference}
@@ -332,8 +358,8 @@ export function NBCPSSRateCalculator({ condensed = false }: Props) {
             <div className="p-3.5 bg-red-50/70 border border-red-200/80 rounded-xl flex items-start gap-3">
               <ShieldCheck className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
               <div className="text-xs text-slate-700 leading-relaxed">
-                <span className="font-bold text-[#0B1340]">Sub-Minimum Wage Protection: </span>
-                Procuring guarding below NBCPSS gazetted minimum rates exposes corporate directors and municipal accounting officers to statutory liability, tender disqualification, and PSiRA sanctions. Quick Bopha guarantees 100% legal compliance.
+                <span className="font-bold text-[#0B1340]">Executive Tender Guidance: </span>
+                Use this breakdown when preparing SBD 3.1 / SBD 3.3 pricing schedules for municipal bids. Sync any updated baseline guard rates to the Public Guard Price Manager tab when ready.
               </div>
             </div>
           </div>

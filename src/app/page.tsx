@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { StatutoryTrustBanner } from "@/components/shared/StatutoryTrustBanner";
-import { NBCPSSRateCalculator } from "@/components/features/NBCPSSRateCalculator";
+import { PublicGuardPricingCards } from "@/components/features/PublicGuardPricingCards";
 import { PlethoraTelemetryShowcase } from "@/components/features/PlethoraTelemetryShowcase";
 import { COMPANY_DETAILS, TRI_DIVISIONS, CORRIDOR_HUBS } from "@/lib/constants";
 
@@ -178,10 +178,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* QUICK-QUOTE LAUNCHER SECTION (FEAT-01) */}
-      <section id="quick-quote" className="py-16 sm:py-22 bg-slate-50/70 px-4 sm:px-8 border-y border-slate-200">
-        <div className="max-w-7xl mx-auto space-y-8">
-          <NBCPSSRateCalculator />
+      {/* PER-GUARD MONTHLY PRICING SECTION */}
+      <section id="guard-pricing" className="py-16 sm:py-22 bg-slate-50/70 px-4 sm:px-8 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto">
+          <PublicGuardPricingCards />
         </div>
       </section>
 

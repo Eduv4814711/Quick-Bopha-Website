@@ -11,6 +11,7 @@ export interface NBCPSSInput {
   officerCount: number;
   area: OperationalArea;
   locationName: string;
+  overheadPercentage?: number;
   clientName?: string;
   clientEmail?: string;
   companyName?: string;
@@ -32,6 +33,7 @@ export interface NBCPSSCalculationResult {
   reliefMultiplier: number;
   nightShiftAllowancePerOfficer: number;
   totalLaborCostPerOfficer: number;
+  overheadPercentage: number;
   operationalOverheadPerOfficer: number;
   monthlyCostPerPost: number;
   totalMonthlyContractCost: number;
@@ -87,8 +89,9 @@ export function calculateNBCPSSQuote(input: NBCPSSInput): NBCPSSCalculationResul
   // Base labor subtotal per officer
   const subtotalLabor = (baseSalary + statutoryBenefits + nightAllowance) * reliefMultiplier;
 
-  // Equipment, Communication & Supervision Overhead (VHF Radio, Baton, Handcuffs, Fleet Supervisor, Occurrence Book)
-  const operationalOverhead = Math.round(subtotalLabor * 0.18);
+  // Equipment, Communication & Supervision Overhead (default 18%)
+  const overheadPct = typeof input.overheadPercentage === "number" ? input.overheadPercentage : 18;
+  const operationalOverhead = Math.round(subtotalLabor * (overheadPct / 100));
 
   // Total cost per individual post
   const monthlyCostPerPost = Math.round(subtotalLabor + operationalOverhead);
@@ -122,7 +125,7 @@ export function calculateNBCPSSQuote(input: NBCPSSInput): NBCPSSCalculationResul
       notes: is24x7 ? "1:4.5 relief ratio for 24/7 post coverage per BCEA mandatory rest days" : "Non-rotational post",
     },
     {
-      label: "Supervision, Patrol Fleet & Equipment",
+      label: `Supervision, Patrol Fleet & Overhead (${overheadPct}%)`,
       code: "OPS-OVERHEAD",
       amountZar: operationalOverhead,
       notes: "Tactical supervision, digital OB logging, VHF comms, uniforms, ballistic gear",
@@ -131,13 +134,14 @@ export function calculateNBCPSSQuote(input: NBCPSSInput): NBCPSSCalculationResul
 
   return {
     quoteReference: quoteId,
-    timestamp: "2026-11-10T12:00:00.000Z",
+    timestamp: new Date().toISOString(),
     inputs: input,
     basicSalaryPerOfficer: baseSalary,
     statutoryBenefitsPerOfficer: statutoryBenefits,
     reliefMultiplier,
     nightShiftAllowancePerOfficer: nightAllowance,
     totalLaborCostPerOfficer: Math.round(subtotalLabor),
+    overheadPercentage: overheadPct,
     operationalOverheadPerOfficer: operationalOverhead,
     monthlyCostPerPost,
     totalMonthlyContractCost,
@@ -154,59 +158,71 @@ export function generateQuotePDF(result: NBCPSSCalculationResult): void {
     format: "a4",
   });
 
-  // Colors
-  const navy = [15, 23, 42];
-  const gold = [217, 119, 6];
-  const slate = [100, 116, 139];
+  // Brand Colors (Royal Navy & Crimson Red)
+  const navy = [11, 19, 64];
+  const crimson = [217, 27, 36];
+  const slate = [90, 101, 125];
 
   // Header Bar
   doc.setFillColor(navy[0], navy[1], navy[2]);
-  doc.rect(0, 0, 210, 36, "F");
+  doc.rect(0, 0, 210, 38, "F");
+
+  doc.setFillColor(crimson[0], crimson[1], crimson[2]);
+  doc.rect(0, 36, 210, 2, "F");
 
   // Title
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
+  doc.setFontSize(17);
   doc.text("QUICK BOPHA SECURITY (PTY) LTD", 14, 15);
 
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.text("Official NBCPSS Statutory Rate Estimate & Guarding Cost Breakdown", 14, 22);
-  doc.text(`PSiRA Reg: ${COMPANY_DETAILS.psiraRegistration} | B-BBEE Level 1 (100% Black Owned)`, 14, 28);
+  doc.setFontSize(8.5);
+  doc.text("Official Executive NBCPSS Statutory Rate Estimate & Guarding Cost Breakdown", 14, 21.5);
+  doc.text(
+    `CRNR: ${COMPANY_DETAILS.registrationNumber} | PSiRA Reg: ${COMPANY_DETAILS.psiraRegistration} | CSD: ${COMPANY_DETAILS.csdNumber} | VAT: ${COMPANY_DETAILS.vatNumber}`,
+    14,
+    27.5
+  );
+  doc.text(
+    `SARS TCS PIN: ${COMPANY_DETAILS.tcsPin} | POPIA Cert: ${COMPANY_DETAILS.popiaRegistration} | Level 1 B-BBEE (100% Black-Owned)`,
+    14,
+    33
+  );
 
   // Quote Metadata Box
   doc.setFillColor(248, 250, 252);
-  doc.rect(14, 42, 182, 34, "F");
+  doc.rect(14, 44, 182, 34, "F");
   doc.setDrawColor(226, 232, 240);
-  doc.rect(14, 42, 182, 34, "S");
+  doc.rect(14, 44, 182, 34, "S");
 
   doc.setTextColor(navy[0], navy[1], navy[2]);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
-  doc.text("QUOTE SPECIFICATIONS", 18, 49);
+  doc.text("QUOTE SPECIFICATIONS", 18, 51);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
-  doc.text(`Reference No: ${result.quoteReference}`, 18, 56);
-  doc.text(`Date Generated: ${new Date().toLocaleDateString("en-ZA")}`, 18, 62);
-  doc.text(`Client / Entity: ${result.inputs.clientName || result.inputs.companyName || "Commercial Client"}`, 18, 68);
+  doc.text(`Reference No: ${result.quoteReference}`, 18, 58);
+  doc.text(`Date Generated: ${new Date().toLocaleDateString("en-ZA")}`, 18, 64);
+  doc.text(`Client / Entity: ${result.inputs.clientName || result.inputs.companyName || "Commercial Client"}`, 18, 70);
 
-  doc.text(`Guard Grade: ${result.inputs.grade}`, 110, 56);
-  doc.text(`Shift Configuration: ${result.inputs.shiftType.replace("_", " ").toUpperCase()}`, 110, 62);
-  doc.text(`Operating Zone: ${result.inputs.locationName} (${result.inputs.area})`, 110, 68);
+  doc.text(`Guard Grade: ${result.inputs.grade}`, 110, 58);
+  doc.text(`Shift Configuration: ${result.inputs.shiftType.replace("_", " ").toUpperCase()}`, 110, 64);
+  doc.text(`Operating Zone: ${result.inputs.locationName} (${result.inputs.area})`, 110, 70);
 
   // Itemized Breakdown Table Header
-  doc.setFillColor(gold[0], gold[1], gold[2]);
-  doc.rect(14, 82, 182, 8, "F");
+  doc.setFillColor(crimson[0], crimson[1], crimson[2]);
+  doc.rect(14, 84, 182, 8, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
-  doc.text("COST COMPONENT", 18, 87);
-  doc.text("REGULATORY CODE", 95, 87);
-  doc.text("AMOUNT PER POST (ZAR)", 150, 87);
+  doc.text("COST COMPONENT", 18, 89.2);
+  doc.text("REGULATORY CODE", 95, 89.2);
+  doc.text("AMOUNT PER POST (ZAR)", 150, 89.2);
 
   // Table Rows
-  let y = 96;
+  let y = 98;
   doc.setFont("helvetica", "normal");
   doc.setTextColor(30, 41, 59);
 
@@ -234,16 +250,16 @@ export function generateQuotePDF(result: NBCPSSCalculationResult): void {
   y += 8;
 
   doc.setFontSize(11);
-  doc.setTextColor(gold[0], gold[1], gold[2]);
+  doc.setTextColor(crimson[0], crimson[1], crimson[2]);
   doc.text(`MONTHLY CONTRACT TOTAL (${result.inputs.officerCount} OFFICERS):`, 18, y);
   doc.text(`R ${result.totalMonthlyContractCost.toLocaleString("en-ZA")}.00`, 155, y);
   y += 12;
 
   // Statutory Certification Callout
-  doc.setFillColor(241, 245, 249);
+  doc.setFillColor(248, 250, 252);
   doc.rect(14, y, 182, 28, "F");
-  doc.setDrawColor(gold[0], gold[1], gold[2]);
-  doc.setLineWidth(0.5);
+  doc.setDrawColor(crimson[0], crimson[1], crimson[2]);
+  doc.setLineWidth(0.4);
   doc.rect(14, y, 182, 28, "S");
 
   doc.setTextColor(navy[0], navy[1], navy[2]);

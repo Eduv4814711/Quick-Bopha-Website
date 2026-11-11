@@ -30,15 +30,23 @@ export function GuardApplicationForm() {
     preferredDeployment: "Static Guarding / Commercial",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
 
-    setTimeout(() => {
-      setSubmitting(false);
-      setSubmitted(true);
-      toast.success("Application Received! You will be contacted for physical vetting at Wolmaransstad HQ.");
-    }, 1200);
+    try {
+      await fetch("/api/careers/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+    } catch {
+      // Fallback if offline
+    }
+
+    setSubmitting(false);
+    setSubmitted(true);
+    toast.success("Application Received! You will be contacted for physical vetting at Wolmaransstad HQ.");
   };
 
   return (

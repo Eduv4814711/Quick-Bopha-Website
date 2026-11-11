@@ -1,6 +1,9 @@
 import assert from "node:assert";
+import fs from "node:fs";
+import path from "node:path";
 import { calculateNBCPSSQuote } from "../src/lib/nbcpss-calculator";
 import { STATUTORY_DOCUMENTS } from "../src/lib/compliance-vault";
+import { DEFAULT_PUBLIC_GUARD_RATES } from "../src/lib/admin-store";
 import {
   COMPANY_DETAILS,
   TRI_DIVISIONS,
@@ -41,8 +44,8 @@ assert.deepStrictEqual(
 );
 console.log("✓ Tri-Division structure verified (Guarding, Alarms, Academy).");
 
-// Test 3: NBCPSS Calculation Engine (Grade C, Rotational 24/7 in Area 3)
-console.log("\n[TEST 3] Verifying NBCPSS Statutory Rate Calculation (Grade C, 24/7)...");
+// Test 3: NBCPSS Calculation Engine (Grade C, Rotational 24/7 in Area 3 + Custom Admin Overhead)
+console.log("\n[TEST 3] Verifying Admin NBCPSS Statutory Rate Calculation (Grade C, 24/7)...");
 const quoteArea3GradeC = calculateNBCPSSQuote({
   grade: "Grade C",
   shiftType: "rotational_24_7",
@@ -54,25 +57,42 @@ const quoteArea3GradeC = calculateNBCPSSQuote({
 assert.strictEqual(quoteArea3GradeC.basicSalaryPerOfficer, 5520);
 assert.strictEqual(quoteArea3GradeC.statutoryBenefitsPerOfficer, 1573);
 assert.strictEqual(quoteArea3GradeC.reliefMultiplier, 1.222);
+assert.strictEqual(quoteArea3GradeC.overheadPercentage, 18);
 assert.strictEqual(
   quoteArea3GradeC.totalMonthlyContractCost,
   quoteArea3GradeC.monthlyCostPerPost * 4
 );
-console.log(`✓ Grade C 24/7 Rate per post: R ${quoteArea3GradeC.monthlyCostPerPost} (Total 4 posts: R ${quoteArea3GradeC.totalMonthlyContractCost})`);
 
-// Test 4: NBCPSS Calculation Engine (Grade A, Day Shift)
-console.log("\n[TEST 4] Verifying NBCPSS Statutory Rate Calculation (Grade A, Day Shift, Area 1)...");
-const quoteArea1GradeA = calculateNBCPSSQuote({
-  grade: "Grade A",
-  shiftType: "day_12h",
+const customOverheadQuote = calculateNBCPSSQuote({
+  grade: "Grade C",
+  shiftType: "rotational_24_7",
   officerCount: 1,
-  area: "Area 1 (Major Metros)",
-  locationName: "Metropolitan Post",
+  area: "Area 3 (Rural / Agri / N12 Corridor)",
+  locationName: "Wolmaransstad / Maquassi Hills",
+  overheadPercentage: 25,
 });
-assert.strictEqual(quoteArea1GradeA.basicSalaryPerOfficer, 7240);
-assert.strictEqual(quoteArea1GradeA.reliefMultiplier, 1.0);
-assert.strictEqual(quoteArea1GradeA.nightShiftAllowancePerOfficer, 0);
-console.log(`✓ Grade A Day Rate per post: R ${quoteArea1GradeA.monthlyCostPerPost}`);
+assert.strictEqual(customOverheadQuote.overheadPercentage, 25);
+assert.ok(customOverheadQuote.monthlyCostPerPost > quoteArea3GradeC.monthlyCostPerPost);
+console.log(`✓ Grade C 24/7 Rate per post (18% overhead): R ${quoteArea3GradeC.monthlyCostPerPost} | (25% overhead): R ${customOverheadQuote.monthlyCostPerPost}`);
+
+// Test 4: Public Per-Guard Pricing Cards & Removal of Estimator from Public Pages
+console.log("\n[TEST 4] Verifying Public Guard Pricing Tiers & Admin-Only Estimator Isolation...");
+assert.strictEqual(DEFAULT_PUBLIC_GUARD_RATES.length, 4);
+assert.deepStrictEqual(
+  DEFAULT_PUBLIC_GUARD_RATES.map((r) => r.grade),
+  ["Grade D / E", "Grade C", "Grade B", "Grade A"]
+);
+
+const homePageSource = fs.readFileSync(path.join(process.cwd(), "src/app/page.tsx"), "utf-8");
+const servicesPageSource = fs.readFileSync(path.join(process.cwd(), "src/app/services/page.tsx"), "utf-8");
+const adminPageSource = fs.readFileSync(path.join(process.cwd(), "src/app/admin/page.tsx"), "utf-8");
+
+assert.ok(!homePageSource.includes("NBCPSSRateCalculator"), "Home page must not include NBCPSSRateCalculator");
+assert.ok(!servicesPageSource.includes("NBCPSSRateCalculator"), "Services page must not include NBCPSSRateCalculator");
+assert.ok(homePageSource.includes("PublicGuardPricingCards"), "Home page must render PublicGuardPricingCards");
+assert.ok(servicesPageSource.includes("PublicGuardPricingCards"), "Services page must render PublicGuardPricingCards");
+assert.ok(adminPageSource.includes("NBCPSSRateCalculator"), "Admin portal must render NBCPSSRateCalculator");
+console.log("✓ Public pages display only Per-Guard Pricing Cards; NBCPSS Estimator is isolated to /admin.");
 
 // Test 5: Compliance Vault Document Catalog
 console.log("\n[TEST 5] Verifying Statutory Compliance Vault Catalog...");

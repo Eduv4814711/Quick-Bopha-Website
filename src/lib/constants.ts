@@ -393,3 +393,82 @@ export const CORRIDOR_HUBS = [
     officersDeployed: "50+ Active Officers",
   },
 ];
+
+export interface PublicGuardRateTier {
+  id: string;
+  grade: "Grade A" | "Grade B" | "Grade C" | "Grade D / E";
+  title: string;
+  subtitle: string;
+  monthlyPricePerGuardZar: number;
+  billingNote: string;
+  popular?: boolean;
+  features: string[];
+}
+
+export const DEFAULT_PUBLIC_GUARD_RATES: PublicGuardRateTier[] = [
+  {
+    id: "grade-d-e",
+    grade: "Grade D / E",
+    title: "Access Control & Perimeter Guard",
+    subtitle: "PSiRA Grade D & E Certified",
+    monthlyPricePerGuardZar: 9450,
+    billingNote: "Per guard / month (excl. VAT)",
+    popular: false,
+    features: [
+      "100% NBCPSS statutory wage & PSSPF compliant",
+      "Gate access register & biometric turnstile control",
+      "Hourly 24/7 Control Room radio welfare check-ins",
+      "Full tactical uniform, baton, torch & PPE issued",
+      "Digital Occurrence Book (OB) incident logging",
+    ],
+  },
+  {
+    id: "grade-c",
+    grade: "Grade C",
+    title: "Commercial, Municipal & Agri Guard",
+    subtitle: "PSiRA Grade C • Core Industry Standard",
+    monthlyPricePerGuardZar: 10372,
+    billingNote: "Per guard / month (excl. VAT)",
+    popular: true,
+    features: [
+      "100% NBCPSS statutory wage & benefit compliance",
+      "Armed or unarmed protection for commercial & farm sites",
+      "Live Plethora GPS patrol checkpoint telemetry",
+      "24/7 roving Area Supervisor post inspections",
+      "Sub-5 min Armed Response & P1/P2 escalation link",
+    ],
+  },
+  {
+    id: "grade-b",
+    grade: "Grade B",
+    title: "Shift Supervisor & Tactical Senior",
+    subtitle: "PSiRA Grade B Supervisory Command",
+    monthlyPricePerGuardZar: 11350,
+    billingNote: "Per guard / month (excl. VAT)",
+    popular: false,
+    features: [
+      "On-site shift roster command & post inspections",
+      "High-risk mining, substation & industrial asset defense",
+      "SAPS FCA Act 60 of 2000 firearm competency verified",
+      "Formal incident investigation & Section 24 reporting",
+      "Direct VHF/GSM priority link to Operational Manager",
+    ],
+  },
+  {
+    id: "grade-a",
+    grade: "Grade A",
+    title: "Site Commander & Close Protection",
+    subtitle: "PSiRA Grade A Executive Risk Officer",
+    monthlyPricePerGuardZar: 12450,
+    billingNote: "Per guard / month (excl. VAT)",
+    popular: false,
+    features: [
+      "Senior Site Commander & VIP Close Protection (CPO)",
+      "Site-specific HIRA risk assessments & SLA governance",
+      "Multi-post command, client liaison & audit pack sign-off",
+      "Tactical convoy escort & high-value asset protection",
+      "Priority P1 executive escalation line to Managing Director",
+    ],
+  },
+];
+

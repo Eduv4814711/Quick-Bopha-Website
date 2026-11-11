@@ -2,7 +2,7 @@ import React from "react";
 import { CheckCircle2, Warehouse, Tractor, HardHat, Car } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { NBCPSSRateCalculator } from "@/components/features/NBCPSSRateCalculator";
+import { PublicGuardPricingCards } from "@/components/features/PublicGuardPricingCards";
 import { StatutoryTrustBanner } from "@/components/shared/StatutoryTrustBanner";
 import { PlethoraTelemetryShowcase } from "@/components/features/PlethoraTelemetryShowcase";
 
@@ -121,25 +121,10 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* EMBEDDED NBCPSS STATUTORY CALCULATOR (FEAT-01) */}
+      {/* PER-GUARD MONTHLY PRICING BY PSIRA GRADE */}
       <section className="py-16 sm:py-20 bg-slate-50/80 px-4 sm:px-8 border-y border-slate-200">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <div className="text-center space-y-2 max-w-2xl mx-auto mb-8">
-            <Badge
-              variant="outline"
-              className="border-red-200 text-red-700 bg-red-50 text-xs uppercase font-semibold"
-            >
-              Statutory Costing Engine
-            </Badge>
-            <h2 className="text-3xl font-extrabold text-[#0B1340]">
-              Instant 30-Second NBCPSS Guarding Cost Estimator
-            </h2>
-            <p className="text-xs text-slate-600">
-              Generate an itemized quotation for your site and export a legally compliant PDF quote.
-            </p>
-          </div>
-
-          <NBCPSSRateCalculator />
+        <div className="max-w-7xl mx-auto">
+          <PublicGuardPricingCards />
         </div>
       </section>
 

@@ -225,6 +225,10 @@ export function Footer() {
             <span>CSD: {COMPANY_DETAILS.csdNumber}</span>
             <span>•</span>
             <span>VAT: {COMPANY_DETAILS.vatNumber}</span>
+            <span>•</span>
+            <Link href="/admin" className="text-[#0B1340] hover:text-red-600 font-semibold transition-colors">
+              Executive Admin
+            </Link>
           </div>
         </div>
       </div>

@@ -1,30 +1,26 @@
 import { NextResponse } from "next/server";
+import { appendTenderLog } from "@/lib/admin-store";
 
 export async function POST(req: Request) {
   try {
     const data = await req.json();
 
-    const auditRecord = {
-      auditId: `AUD-${Date.now()}`,
-      officerName: data.officerName,
-      organization: data.organization,
-      businessEmail: data.businessEmail,
-      phoneNumber: data.phoneNumber,
-      tenderReference: data.tenderReference,
-      selectedDocuments: data.selectedDocuments,
-      routedTo: "compliance@quickbopha.co.za",
+    appendTenderLog({
+      officerName: data.officerName || "Procurement Officer",
+      organization: data.organization || "Municipal Entity",
+      businessEmail: data.businessEmail || "",
+      phoneNumber: data.phoneNumber || "",
+      tenderReference: data.tenderReference || "RFQ",
+      documentsCount: Array.isArray(data.selectedDocuments) ? data.selectedDocuments.length : 7,
       timestamp: new Date().toISOString(),
-      clientIp: req.headers.get("x-forwarded-for") || "internal-dispatch",
-    };
-
-    console.log("[TENDER VAULT AUDIT DISPATCH]", auditRecord);
+    });
 
     return NextResponse.json({
       success: true,
-      auditId: auditRecord.auditId,
+      auditId: `AUD-${Date.now()}`,
       message: "Statutory compliance bundle authorized. Audit dispatched to compliance@quickbopha.co.za.",
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Audit logging failed." },
       { status: 500 }
